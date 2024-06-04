@@ -36,13 +36,8 @@ class authController {
         return res.status(400).json("Wrong user or password!");
       const token = jwt.sign({ id: data[0].id }, "jwtkey");
       const { password, ...others } = data[0];
-      console.log(data);
-      res
-        .status(200)
-        .cookie("access_token", token, {
-          expires: new Date(Date.now() + 900000),
-        })
-        .json(others);
+      console.log(token);
+      res.status(200).json([others, token]);
     });
   }
   logout(req, res, next) {

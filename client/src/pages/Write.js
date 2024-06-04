@@ -14,12 +14,13 @@ const Write = () => {
   const [title, setTitle] = useState(state?.title || "");
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
+  const access_token = document.cookie.slice(13);
   const upload = async () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
       const res = await axios.post(
-        "http://localhost:8800/api/upload",
+        "http://localhost:8800/api/upload/post",
         formData
       );
       return res.data;
@@ -29,30 +30,37 @@ const Write = () => {
   };
   const handleClick = async (e) => {
     e.preventDefault();
+    console.log(123);
     const imgUrl = await upload();
     try {
       let res = "";
       if (state) {
+        console.log(123);
+
         res = await axios.patch(`http://localhost:8800/api/post/${state.id}`, {
           title,
           description: value,
           cat,
           img: file ? imgUrl : "",
+          access_token,
         });
       } else {
+        console.log(123);
+
         res = await axios.post(`http://localhost:8800/api/post`, {
           title,
           description: value,
           cat,
           img: file ? imgUrl : "",
           date: moment(Date.now()).format("YYY--MM-DD HH:mm:ss"),
+          access_token,
         });
       }
-      navigate("/");
       console.log(res);
     } catch (err) {
       console.log(err);
     }
+    navigate("/");
   };
   return (
     <div className="app">

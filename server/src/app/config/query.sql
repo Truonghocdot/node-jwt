@@ -1,11 +1,14 @@
-CREATE TABLE user (
+DROP DATABASE IF EXISTS my_blog;
+CREATE DATABASE my_blog;
+USE my_blog;
+CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT,
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     userImg VARCHAR(255) NULL,
-    PRIMARY KEY (id),
-)
+    PRIMARY KEY (id)
+);
 CREATE TABLE posts (
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
@@ -15,10 +18,10 @@ CREATE TABLE posts (
     uid INT NOT NULL,
     cat VARCHAR(45) NOT NULL,
     PRIMARY KEY(id),
-    INDEX uid_idx {uid : ASC } VISIBLE
+    INDEX uid_idx (uid ASC ),
     CONSTRAINT uid 
-        POREIGN KEY uid ,
-        REFERENCES users(id),
-        ON DELETE CASCADE,
-        ON UPDATE CASCADE,
-)
+        FOREIGN KEY (uid) 
+        REFERENCES users(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);

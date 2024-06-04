@@ -7,7 +7,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const logoutOfPage = () => {
     logout();
-    navigate("/");
+    navigate("/login");
   };
   const { currentUser, logout } = useContext(AuthContext);
   return (
@@ -25,7 +25,7 @@ const Navbar = () => {
           <Link className="link" to="/?cat=science">
             <h6>SCIENCE</h6>
           </Link>
-          <Link className="link" to="/?cat=technology">
+          <Link className="link" to="/?cat=techlonogy">
             <h6>TECHNOLOGY</h6>
           </Link>
           <Link className="link" to="/?cat=cinema">
@@ -47,11 +47,19 @@ const Navbar = () => {
               Login
             </Link>
           )}
-          <span className="write">
-            <Link className="link" to="/write">
-              Write
-            </Link>
-          </span>
+          {currentUser ? (
+            <span className="write">
+              <Link className="link" to="/write">
+                Write
+              </Link>
+            </span>
+          ) : (
+            <span className="write">
+              <Link className="link" to="/login">
+                Write
+              </Link>
+            </span>
+          )}
         </div>
       </div>
     </div>

@@ -1,22 +1,35 @@
 import { Link, useLocation } from "react-router-dom";
 import Header from "../components/Header.js";
 import Footer from "../components/Footer.js";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
 function Home() {
   const [posts, setPosts] = useState([]);
+  const [textSearch, setTextSearch] = useState("");
+  const searchRef = useRef();
   const cat = useLocation();
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8800/api/post/${cat.search}`
+      );
+      setPosts(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleSearchText = (e) => {
+    clearTimeout(searchRef.current);
+    searchRef.current = setTimeout(() => {
+      setTextSearch(e);
+    }, 700);
+  };
+  const searchValue = useMemo(() => {
+    return posts.filter((item) =>
+      item.title.toLowerCase().includes(textSearch.toLowerCase())
+    );
+  }, [textSearch]);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:8800/api/post/${cat.search}`
-        );
-        setPosts(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchData();
   }, [cat]);
   const getText = (html) => {
@@ -28,19 +41,32 @@ function Home() {
       <div className="app">
         <div className="container">
           <Header />
-          <div key={2} className="home">
+          <div className="form-control">
+            <label htmlFor="search-input">Search Post: </label>
+            <input
+              name="search-input"
+              onChange={(e) => handleSearchText(e.target.value)}
+              type="text"
+              placeholder="Enter your search"
+            />
+          </div>
+          <div className="home">
             <div className="posts">
-              {posts.map((post) => (
+              {(textSearch ? searchValue : posts || []).map((post) => (
                 <div className="post" key={post.id}>
                   <div className="img">
-                    <img src={`../upload/${post.img}`} alt="" />
+                    <img src={`../upload/posts/${post.img}`} alt="" />
                   </div>
                   <div className="content">
                     <Link className="link" to={`/post/${post.id}`}>
                       <h1>{post.title}</h1>
                     </Link>
-                    <p>{getText(post.description)}</p>
-                    <button>Read More</button>
+                    <div className="limted-text" id="limited-text">
+                      {getText(post.description).substring(0, 180) + "..."}
+                    </div>
+                    <button>
+                      <Link to={`/post/${post.id}`}>Read More</Link>
+                    </button>
                   </div>
                 </div>
               ))}

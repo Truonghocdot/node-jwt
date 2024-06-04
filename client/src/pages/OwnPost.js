@@ -22,6 +22,10 @@ function OwnPost() {
     };
     getOwnPosts();
   }, [user.id]);
+  const getText = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent;
+  };
   return (
     <div className="app">
       <div className="container">
@@ -51,16 +55,19 @@ function OwnPost() {
                 <Link to={`/post/${post.id}`}>
                   <h2>{post.title}</h2>
                   <div className="content">
-                    <img className="logo" src={post.img} />
-                    <div className="thumb">
-                      <p className="main-content">{post.description}</p>
+                    <img className="logo" src={`upload/posts/${post.img}`} />
+                    <div className="thumb limted-text">
+                      <p className="main-content">
+                        {getText(
+                          getText(post.description).substring(0, 180) + "..."
+                        )}
+                      </p>
                     </div>
                   </div>
                 </Link>
               ))
             )}
           </div>
-          <Menu cat="art" />
         </div>
         <Footer />
       </div>

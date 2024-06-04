@@ -1,11 +1,69 @@
 $lightGreen: #b9e7e7;
-
+.category-post {
+  text-transform: capitalize;
+}
 .app {
   display: flex;
   justify-content: center;
   .container {
     width: 1024px;
+    .comment {
+      .block-comment {
+        display: flex;
+        gap: 12px;
+        .comment-content {
+          flex-direction: row-reverse;
+          align-items: center;
+          gap: 2rem;
+          button {
+            outline: none;
+            border: 1px solid #333;
+            background-color: red;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 8px;
+            color: #fff;
+          }
+          display: flex;
+        }
+      }
+    }
+    .form-control {
+      label {
+        font-size: 32px;
+        font-weight: 700;
+      }
+      max-width: max-content;
+      row-gap: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      input {
+        border: 1px solid #ccc;
+        padding: 4px 8px;
+        font-size: 16px;
+        border-radius: 4px;
+        outline: none;
+      }
+    }
 
+    //comment
+    .comment {
+      h2 {
+        font-size: 32px;
+      }
+      .block-comment {
+        .user {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          img {
+            height: fit-content;
+            width: 32px;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
     .link {
       text-decoration: none;
       color: inherit;
@@ -32,6 +90,7 @@ $lightGreen: #b9e7e7;
         padding: 50px;
         background-color: white;
         width: 200px;
+        position: relative;
         gap: 20px;
 
         input {
@@ -39,7 +98,12 @@ $lightGreen: #b9e7e7;
           border: none;
           border-bottom: 1px solid gray;
         }
-
+        .icon-eyes {
+          cursor: pointer;
+          bottom: 50%;
+          position: absolute;
+          right: 58px;
+        }
         button {
           padding: 10px;
           border: none;
@@ -170,11 +234,15 @@ $lightGreen: #b9e7e7;
             justify-content: space-between;
 
             h1 {
-              font-size: 48px;
+              font-size: 42px;
             }
+            .limted-text {
+              max-width: 400px;
+              white-space: wrap;
 
-            p {
-              font-size: 18px;
+              p {
+                font-size: 18px;
+              }
             }
 
             button {
@@ -184,12 +252,17 @@ $lightGreen: #b9e7e7;
               cursor: pointer;
               background-color: white;
               border: 1px solid teal;
-              color: teal;
-
+              a {
+                color: teal;
+                text-decoration: none;
+              }
               &:hover {
                 border: 1px solid white;
                 background-color: $lightGreen;
-                color: black;
+                a {
+                  color: black;
+                  text-decoration: none;
+                }
               }
             }
           }
@@ -416,10 +489,6 @@ $lightGreen: #b9e7e7;
             .logo {
               height: max-content;
               max-width: 386px;
-            }
-            .thumb {
-              .main-content {
-              }
             }
           }
         }

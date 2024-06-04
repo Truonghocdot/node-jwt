@@ -1,20 +1,23 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function Menu({ cat }) {
+  const { id } = useParams();
   const [posts, setPosts] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:8800/api/post/?cat=${cat}`
-        );
-        setPosts(res.data);
-      } catch (err) {
-        console.log(err);
+  console.log(cat);
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8800/api/post/?cat=${cat}`);
+      const data = res.data;
+      if (data.find((dt) => dt.id == id)) {
+        setPosts(data.filter((item) => item.id != id));
       }
-    };
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, [cat]);
   // const posts = [
@@ -48,7 +51,7 @@ function Menu({ cat }) {
       <h1>Other posts may you like</h1>
       {posts.map((post) => (
         <div className="post">
-          <img src={`../upload/${post.img}`} />
+          <img src={`../upload/posts/${post.img}`} />
           <h2>{post.title}</h2>
           <Link to={`/post/${post.id}`}>Read more</Link>
         </div>

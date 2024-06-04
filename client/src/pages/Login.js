@@ -1,9 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 function Login() {
   const navigate = useNavigate();
   const [err, setErr] = useState(null);
+  const [type, setType] = useState({
+    pass: "password",
+    icon: "eye-outline",
+  });
+  useEffect(() => {}, []);
   const { login } = useContext(AuthContext);
   const [inputs, setInputs] = useState({
     username: "",
@@ -12,11 +17,25 @@ function Login() {
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+  const handleChangeIcon = () => {
+    const inputPass = document.getElementById("input-pass");
+    if (inputPass.type == "password") {
+      setType({
+        pass: "text",
+        icon: "eye-off-outline",
+      });
+    } else {
+      console.log(inputPass.type);
+      setType({
+        pass: "password",
+        icon: "eye-outline",
+      });
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await login(inputs);
-      console.log(res);
       navigate("/");
     } catch (err) {
       setErr(err.response.data);
@@ -27,7 +46,7 @@ function Login() {
       <div className="container">
         <div className="auth">
           <h1>Login</h1>
-          <form>
+          <form name="form-login">
             <input
               required
               type="text"
@@ -37,11 +56,15 @@ function Login() {
             />
             <input
               required
-              type="password"
+              type={`${type.pass}`}
               onChange={handleChange}
+              id="input-pass"
               placeholder="password"
               name="password"
             />
+            <div className="icon-eyes" onClick={handleChangeIcon}>
+              <ion-icon className="ion-icon" name={`${type.icon}`}></ion-icon>
+            </div>
             <button type="submit" onClick={(e) => handleSubmit(e)}>
               Login
             </button>

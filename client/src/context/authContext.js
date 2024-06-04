@@ -10,11 +10,14 @@ export const AuthContextProvider = ({ children }) => {
       "http://localhost:8800/api/auth/login",
       inputs
     );
-    console.log(res);
-    setCurrentUser(res.data);
+    document.cookie = "access_token=" + res.data[1];
+    setCurrentUser(res.data[0]);
   };
   const logout = async (inputs) => {
+    var now = new Date();
+    now.setMonth(now.getMonth() - 1);
     const res = await axios.post("http://localhost:8800/api/auth/logout");
+    document.cookie = `access_token=;expires=${now.toUTCString()};Secure;`;
     setCurrentUser(null);
   };
   useEffect(() => {

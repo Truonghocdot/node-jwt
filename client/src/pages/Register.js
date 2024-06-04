@@ -55,7 +55,7 @@ function Register() {
             <button onClick={handleSubmit}>Register</button>
             {err && <p>{err}</p>}
             <span>
-              Don't you have an account? <Link to="/login">Register</Link>
+              Don't you have an account? <Link to="/login">Login</Link>
             </span>
           </form>
         </div>
